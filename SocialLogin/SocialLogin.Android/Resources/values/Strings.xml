@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="hello">Hello World, Click Me!</string>
+  <string name="app_name">Finden</string>
+  <string name="facebook_app_id">311782785921510</string>
+  <string name="fb_login_protocol_scheme">fb311782785921510</string>
+
+
+</resources>
