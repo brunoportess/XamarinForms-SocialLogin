@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Facebook.CoreKit;
 using Foundation;
+using Google.SignIn;
 using UIKit;
 
 namespace SocialLogin.iOS
@@ -25,7 +26,31 @@ namespace SocialLogin.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
+            // ****************************************************************
+            // * TODO: Alterar info.plist, adicionar GoogleService-Info.plist *
+            // ****************************************************************
+            var googleServiceDictionary = NSDictionary.FromFile("GoogleService-Info.plist");
+            SignIn.SharedInstance.ClientID = googleServiceDictionary["CLIENT_ID"].ToString();
+
             return base.FinishedLaunching(app, options);
+        }
+
+        public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
+        {
+            var openUrlOptions = new UIApplicationOpenUrlOptions(options);
+            return SignIn.SharedInstance.HandleUrl(url, openUrlOptions.SourceApplication, openUrlOptions.Annotation);
+        }
+
+        public override void OnActivated(UIApplication uiApplication)
+        {
+            base.OnActivated(uiApplication);
+            AppEvents.ActivateApp();
+        }
+
+        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+        {
+            //return base.OpenUrl(application, url, sourceApplication, annotation);
+            return ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
         }
     }
 }
